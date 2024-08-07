@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lg_music/models/global_data.dart';
+import 'package:lg_music/provider/global_data.dart';
+import 'package:lg_music/provider/search/search_suggest.dart';
 import 'package:lg_music/pages/home/home.dart';
+import 'package:lg_music/pages/home/music_lib.dart';
 import 'package:lg_music/pages/home/user_center.dart';
+import 'package:lg_music/pages/search/search.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -13,15 +16,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => GlobalData()),
-    ], 
-    child: MaterialApp(
-      home: const MainPage(),
-      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-    )
-  );
-    
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => GlobalData()),
+          ChangeNotifierProvider(create: (_) => SearchSuggestProvider())
+        ],
+        child: MaterialApp(
+          title: "星海有声",
+          home: const MainPage(),
+          theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+        ));
   }
 }
 
@@ -61,21 +65,20 @@ class _MainPageState extends State<MainPage>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        centerTitle: true,
-        title: ElevatedButton(
-          onPressed: () => null,
-          style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.grey[200]!),
-              shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)))),
-          child: const Text('搜索'),
-        ),
-      ),
+          title: Text("${bottomNavigationBarItems[currentIndex].label}"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Search()));
+                },
+                icon: const Icon(Icons.search))
+          ]),
       body: PageView(
         controller: pageController,
-        children: const [HomePage(), UserCenter()],
+        children: const [HomePage(), MusicLib(), UserCenter()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: bottomNavigationBarItems,

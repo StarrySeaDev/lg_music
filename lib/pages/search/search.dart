@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lg_music/models/search/search_suggest.dart';
+import 'package:lg_music/provider/search/search_suggest.dart';
 import 'package:lg_music/pages/search/search_result.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class Search extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             title: Container(
-              height: 40,
+              height: 45,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
